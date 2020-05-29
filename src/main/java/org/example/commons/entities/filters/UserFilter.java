@@ -1,17 +1,16 @@
 package org.example.commons.entities.filters;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-import org.example.commons.api.Filter;
+import org.example.commons.api.TypedFilter;
 import org.example.commons.entities.User;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.UserType;
 
 @Builder
 @Data
-public class UserFilter implements Filter<User> {
+public class UserFilter implements TypedFilter<User> {
 
     public static final UserFilter DEFAULT = UserFilter.builder().build();
 
@@ -37,8 +36,8 @@ public class UserFilter implements Filter<User> {
     private String address = "";
 
     @Builder.Default
-    private List<UserType> type = new ArrayList();
+    private List<UserType> type = List.of();
 
     @Builder.Default
-    private List<UserStatus> status = new ArrayList();
+    private List<UserStatus> status = List.of();
 }
