@@ -1,8 +1,6 @@
 package org.example.commons.entities;
 
 import java.io.Serializable;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
@@ -12,15 +10,17 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.example.commons.AbstractEntity;
 
 @Builder(toBuilder=true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -49,7 +49,7 @@ public class Membership extends AbstractEntity<Membership> {
     private boolean editing = false;
 
     @Override
-    public Membership clone() {
+    public Membership copy() {
         return this.toBuilder().build();
     }
 

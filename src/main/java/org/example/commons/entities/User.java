@@ -8,8 +8,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -17,7 +18,8 @@ import org.example.commons.AbstractEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder=true)
@@ -49,10 +51,10 @@ public class User extends AbstractEntity<User> {
     private String verificationKey = "";
 
     @Builder.Default
-    private PhoneNumber phoneNumber = PhoneNumber.DEFAULT.clone();
+    private PhoneNumber phoneNumber = PhoneNumber.DEFAULT.copy();
 
     @Builder.Default
-    private Address address = Address.DEFAULT.clone();
+    private Address address = Address.DEFAULT.copy();
 
     @Enumerated
     @Builder.Default
@@ -67,7 +69,7 @@ public class User extends AbstractEntity<User> {
     private boolean editing = false;
 
     @Override
-    public User clone() {
+    public User copy() {
         return this.toBuilder().build();
     }
 

@@ -2,10 +2,8 @@ package org.example.commons.entities;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Builder(toBuilder=true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
@@ -50,7 +49,7 @@ public class Address extends AbstractEntity<Address> {
     private boolean editing = false;
 
     @Override
-    public Address clone() {
+    public Address copy() {
         return this.toBuilder().build();
     }
 
