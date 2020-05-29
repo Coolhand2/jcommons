@@ -1,6 +1,6 @@
 package org.example.commons.repositories;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import org.example.commons.entities.Address;
@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
@@ -183,7 +182,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByType() {
-        UserFilter filter = UserFilter.builder().type(Arrays.asList(UserType.ADMINISTRATOR)).build();
+        UserFilter filter = UserFilter.builder().type(Collections.singletonList(UserType.ADMINISTRATOR)).build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -192,7 +191,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByStatus() {
-        UserFilter filter = UserFilter.builder().status(Arrays.asList(UserStatus.ACTIVE)).build();
+        UserFilter filter = UserFilter.builder().status(Collections.singletonList(UserStatus.ACTIVE)).build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -210,13 +209,13 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterWithComplicatedFilter() {
-        UserFilter filter = UserFilter.builder().email("B").type(Arrays.asList(UserType.MODERATOR)).build();
+        UserFilter filter = UserFilter.builder().email("B").type(Collections.singletonList(UserType.MODERATOR)).build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
         assertTrue(userList.contains(u1));
 
-        filter.setType(Arrays.asList(UserType.MEMBER));
+        filter.setType(Collections.singletonList(UserType.MEMBER));
         userList = users.filter(filter);
         assertTrue(userList.isEmpty());
 

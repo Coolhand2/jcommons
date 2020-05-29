@@ -8,23 +8,26 @@ import org.example.commons.entities.User_;
 import org.example.commons.repositories.api.UserRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
-public class AbstractRepositoryTest {
+public class TypedRepositoryImplTest {
 
-    @Deployment public static Archive<?> deploy() {
-        return ShrinkWrap.create(JavaArchive.class)
+
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
                 .addPackages(true, "org.example")
                 .addAsResource("META-INF/test-persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -76,7 +79,7 @@ public class AbstractRepositoryTest {
     public void testUpdate() {
         u1.setUsername("ZYX");
         users.update(u1);
-        User u3 = users.findById(u1.getId()).clone();
+        User u3 = users.findById(u1.getId()).copy();
         assertEquals(u1, u3);
         assertNotEquals(u1, u2);
     }
@@ -105,7 +108,7 @@ public class AbstractRepositoryTest {
      */
     @Test
     public void testFindDoesNotKeepReferenceWithClone() {
-        User u4 = users.findById(u1.getId()).clone();
+        User u4 = users.findById(u1.getId()).copy();
         assertEquals(u1, u4);
         u1.setUsername("Something Completely Different");
         assertNotEquals(u1, u4);
