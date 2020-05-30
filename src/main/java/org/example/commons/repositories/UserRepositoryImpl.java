@@ -30,7 +30,9 @@ public final class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<SingularAttribute<User, ?>> getProjectionList() {
-        return Arrays.asList(User_.id, User_.username, User_.email, User_.phoneNumber);
+        return Arrays.asList(
+                User_.id, User_.username, User_.email, User_.phoneNumber, User_.address, User_.type, User_.status
+        );
     }
 
     @Override
