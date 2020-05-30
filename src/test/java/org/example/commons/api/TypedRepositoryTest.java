@@ -1,7 +1,6 @@
-package org.example.commons;
+package org.example.commons.api;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -16,17 +15,13 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
-public class TypedRepositoryImplTest {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TypedRepositoryImplTest.class);
+public class TypedRepositoryTest {
 
     @Deployment
     public static WebArchive deploy() {
@@ -51,56 +46,54 @@ public class TypedRepositoryImplTest {
 
     @Test
     public void testFindAll() {
-        List<User> list = users.findAll();
-        assertEquals(3, list.size());
-        assertTrue(list.containsAll(Arrays.asList(u1, u2, u3)));
+        List<User> actual = users.findAll();
+        assertEquals(3, actual.size());
+        assertTrue(actual.containsAll(Arrays.asList(u1, u2, u3)));
     }
 
     @Test
     public void testFindAllWithComparator() {
-        List<User> list = users.findAll(User.defaultSort.reversed());
-        List<User> orderedList = users.findAll(User.defaultSort);
-        assertNotEquals(list, orderedList);
-        list.sort(User.defaultSort);
-        assertEquals(list, orderedList);
+        List<User> expected = List.of(u1, u2, u3);
+        List<User> actual = users.findAll(User.defaultSort);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testFindAllWithPredicate() {
-        List<User> list = users.findAll(u -> u.getUsername().contains("C"));
-        assertEquals(list.size(), 2);
-        assertFalse(list.contains(u3));
+        List<User> actual = users.findAll(u -> u.getUsername().contains("C"));
+        assertEquals(actual.size(), 2);
+        assertFalse(actual.contains(u3));
 
-        list = users.findAll(u -> u.getUsername().contains("B"));
-        assertEquals(list.size(), 1);
-        assertTrue(list.contains(u1));
+        actual = users.findAll(u -> u.getUsername().contains("B"));
+        assertEquals(actual.size(), 1);
+        assertTrue(actual.contains(u1));
     }
 
     @Test
     public void testFindAllWithComparatorAndPredicate() {
-        List<User> list = users.findAll(User.defaultSort, u -> u.getUsername().contains("C"));
+        List<User> actual = users.findAll(User.defaultSort, u -> u.getUsername().contains("C"));
         List<User> expected = List.of(u1, u2);
-        assertEquals(expected, list);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testFindById() {
-        User u4 = users.findById(u1.getId());
-        assertEquals(u1, u4);
+        User actual = users.findById(u1.getId());
+        assertEquals(u1, actual);
     }
 
     @Test
     public void testFindByIds() {
-            List<User> list = users.findByIds(u1.getId(), u2.getId());
-            assertEquals(2, list.size());
-            assertFalse(list.contains(u3));
+        List<User> actual = users.findByIds(u1.getId(), u2.getId());
+        assertEquals(2, actual.size());
+        assertFalse(actual.contains(u3));
     }
 
     @Test
     public void testFindByIdsIterable() {
-            List<User> actual = users.findByIds(List.of(u1.getId(), u2.getId()));
-            assertEquals(2, actual.size());
-            assertFalse(actual.contains(u3));
+        List<User> actual = users.findByIds(List.of(u1.getId(), u2.getId()));
+        assertEquals(2, actual.size());
+        assertFalse(actual.contains(u3));
     }
 
     @Test
@@ -112,9 +105,9 @@ public class TypedRepositoryImplTest {
 
     @Test
     public void testFindByColumn() {
-        List<User> list = users.findByColumn(User_.username, "CDE");
-        assertEquals(1, list.size());
-        assertTrue(list.contains(u2));
+        List<User> actual = users.findByColumn(User_.username, "CDE");
+        assertEquals(1, actual.size());
+        assertTrue(actual.contains(u2));
     }
 
     @Test
@@ -150,17 +143,17 @@ public class TypedRepositoryImplTest {
     @Test
     public void testDelete() {
         users.delete(u2);
-        List<User> list = users.findAll();
-        assertEquals(2, list.size());
-        assertFalse(list.contains(u2));
+        List<User> actual = users.findAll();
+        assertEquals(2, actual.size());
+        assertFalse(actual.contains(u2));
     }
 
     @Test
     public void testFindKeepsReference() {
-        User u4 = users.findById(u1.getId());
-        assertEquals(u1, u4);
+        User actual = users.findById(u1.getId());
+        assertEquals(u1, actual);
         u1.setUsername("Something Completely Different");
-        assertEquals(u1, u4);
+        assertEquals(u1, actual);
     }
 
     /**
@@ -170,10 +163,10 @@ public class TypedRepositoryImplTest {
      */
     @Test
     public void testFindDoesNotKeepReferenceWithClone() {
-        User u4 = users.findById(u1.getId()).copy();
-        assertEquals(u1, u4);
+        User actual = users.findById(u1.getId()).copy();
+        assertEquals(u1, actual);
         u1.setUsername("Something Completely Different");
-        assertNotEquals(u1, u4);
+        assertNotEquals(u1, actual);
     }
 
 }
