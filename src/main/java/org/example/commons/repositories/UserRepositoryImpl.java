@@ -3,13 +3,13 @@ package org.example.commons.repositories;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.example.commons.ProjectedRepositoryImpl;
+import javax.persistence.metamodel.SingularAttribute;
 import org.example.commons.api.TypedFilter;
 import org.example.commons.entities.Address_;
 import org.example.commons.entities.PhoneNumber_;
@@ -21,12 +21,31 @@ import org.example.commons.repositories.api.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserRepositoryImpl extends ProjectedRepositoryImpl<User, Long, UserDataTransfer> implements UserRepository {
+public final class UserRepositoryImpl implements UserRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
-    public UserRepositoryImpl() {
-        super(User.class, Arrays.asList(User_.id, User_.username, User_.email, User_.phoneNumber), UserDataTransfer.class);
+    @Inject
+    private EntityManager em;
+
+    @Override
+    public List<SingularAttribute<User, ?>> getProjectionList() {
+        return Arrays.asList(User_.id, User_.username, User_.email, User_.phoneNumber);
+    }
+
+    @Override
+    public Class<UserDataTransfer> getProjectedClass() {
+        return UserDataTransfer.class;
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
+    @Override
+    public Class<User> getEntityClass() {
+        return User.class;
     }
 
     @Override

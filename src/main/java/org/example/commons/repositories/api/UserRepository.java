@@ -6,5 +6,5 @@ import org.example.commons.api.TypedRepository;
 import org.example.commons.entities.User;
 import org.example.commons.entities.dtos.UserDataTransfer;
 
-public interface UserRepository extends TypedRepository<User, Long>, FilteredRepository<User>, ProjectedRepository<User, Long, UserDataTransfer> {
+public interface UserRepository extends TypedRepository<User, Long>, ProjectedRepository<User, Long, UserDataTransfer>, FilteredRepository<User> {
 }
