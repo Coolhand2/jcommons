@@ -8,4 +8,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     private UserRepository users;
+
+    @Override
+    public UserRepository getUserRepository() {
+        return users;
+    }
 }
