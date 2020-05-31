@@ -224,4 +224,73 @@ public class UserRepositoryTest {
         assertEquals(1, userList.size());
         assertTrue(userList.contains(u3));
     }
+
+    @Test
+    public void testFindByUsername() {
+        User expected = u1;
+        User actual = users.findByUsername("ABC");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByEmail() {
+        User expected = u1;
+        User actual = users.findByEmail("ABC");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByPkiDn() {
+        User expected = u1;
+        User actual = users.findByPkiDn("ABC");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByVerificationKey() {
+        User expected = u1;
+        User actual = users.findByVerificationKey("ABC");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByPhoneNumber() {
+        PhoneNumber p1 = PhoneNumber.builder()
+            .areaCode("123")
+            .frontThree("123")
+            .backFour("1234")
+            .build();
+        User expected = u1;
+        User actual = users.findByPhoneNumber(p1);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByAddress() {
+        Address a1 = Address.builder()
+                .city("ABC")
+                .country("ABC")
+                .state("ABC")
+                .street1("ABC")
+                .street2("ABC")
+                .zipcode("ABC")
+                .build();
+        User expected = u1;
+        User actual = users.findByAddress(a1);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByType() {
+        List<User> expected = List.of(u1);
+        List<User> actual = users.findByType(UserType.MODERATOR);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindByStatus() {
+        List<User> expected = List.of(u1);
+        List<User> actual = users.findByStatus(UserStatus.DISABLED);
+        assertEquals(expected, actual);
+    }
 }

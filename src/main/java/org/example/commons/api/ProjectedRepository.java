@@ -1,5 +1,6 @@
 package org.example.commons.api;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +65,10 @@ public interface ProjectedRepository<T, S, X> extends BasicRepository<T> {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<X> query = builder.createQuery(getProjectedClass());
         Root<T> root = query.from(getEntityClass());
+        List<javax.persistence.criteria.Predicate> ins = new ArrayList<>();
+        ids.forEach((id) -> ins.add(builder.equal(root.get("id"), id)));
         query.multiselect(getProjectionList().stream().map(root::get).collect(toList()));
-        query.where(root.get("id").in(ids));
+        query.where(builder.or(ins.toArray(new javax.persistence.criteria.Predicate[0])));
         return getSession().createQuery(query).getResultList();
     }
 
@@ -96,6 +99,7 @@ public interface ProjectedRepository<T, S, X> extends BasicRepository<T> {
         CriteriaQuery<X> query = builder.createQuery(getProjectedClass());
         Root<T> root = query.from(getEntityClass());
         query.multiselect(getProjectionList().stream().map(root::get).collect(toList()));
+        columns.forEach((key, value) -> query.where(root.get(key).in(value)));
         return getSession().createQuery(query).getSingleResult();
     }
 
