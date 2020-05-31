@@ -7,14 +7,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.example.commons.AbstractEntity;
+import org.example.commons.api.AbstractEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Builder(toBuilder=true)
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,18 +43,7 @@ public class PhoneNumber extends AbstractEntity<PhoneNumber> {
     }
 
     @Override
-    public int compareTo(PhoneNumber that) {
-        return CompareToBuilder.reflectionCompare(this, that);
-    }
-
-
-    @Override
     protected boolean isEqualTo(PhoneNumber that) {
         return EqualsBuilder.reflectionEquals(this, that);
-    }
-
-    @Override
-    protected int getHashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

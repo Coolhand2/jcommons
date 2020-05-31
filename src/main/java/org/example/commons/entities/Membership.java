@@ -13,10 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.example.commons.AbstractEntity;
+import org.example.commons.api.AbstractEntity;
 
 @Builder(toBuilder=true)
 @Getter
@@ -56,16 +54,6 @@ public class Membership extends AbstractEntity<Membership> {
     @Override
     protected boolean isEqualTo(Membership that) {
         return EqualsBuilder.reflectionEquals(this, that);
-    }
-
-    @Override
-    protected int getHashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public int compareTo(Membership that) {
-        return CompareToBuilder.reflectionCompare(this, that);
     }
 
     public class MembershipKey implements Serializable {
