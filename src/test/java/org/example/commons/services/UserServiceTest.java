@@ -4,6 +4,7 @@ import java.util.List;
 import javax.inject.Inject;
 import org.example.commons.entities.User;
 import org.example.commons.entities.filters.UserFilter;
+import org.example.commons.repositories.api.UserRepository;
 import org.example.commons.services.api.UserService;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -29,6 +30,9 @@ public class UserServiceTest {
     }
 
     @Inject
+    private UserRepository users;
+
+    @Inject
     private UserService userService;
 
     private User u1, u2, u3;
@@ -38,7 +42,7 @@ public class UserServiceTest {
         u1 = User.builder().username("ABC").build();
         u2 = User.builder().username("CDE").build();
         u3 = User.builder().username("EFG").build();
-        userService.createUsers(u1, u2, u3);
+        users.create(u1, u2, u3);
     }
 
     @Test

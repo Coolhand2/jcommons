@@ -16,8 +16,4 @@ public interface UserService {
     default void saveUser(User user) {
         getUserRepository().update(user);
     }
-
-    default void createUsers(User... users) {
-        getUserRepository().create(users);
-    }
 }
