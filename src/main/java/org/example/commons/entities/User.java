@@ -92,4 +92,24 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     public int compareTo(User that) {
         return defaultSort.compare(this, that);
     }
+
+    public boolean isGuest() {
+        return UserType.GUEST == type;
+    }
+
+    public boolean isMember() {
+        return UserType.MEMBER == type;
+    }
+
+    public boolean isUnverified() {
+        return UserStatus.UNVERIFIED == status;
+    }
+
+    public boolean isActive() {
+        return UserStatus.ACTIVE == status;
+    }
+
+    public boolean isDisabled() {
+        return UserStatus.DISABLED == status;
+    }
 }

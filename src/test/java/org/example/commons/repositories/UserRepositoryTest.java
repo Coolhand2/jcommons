@@ -88,7 +88,7 @@ public class UserRepositoryTest {
                 .verificationKey("ABC")
                 .phoneNumber(p1)
                 .address(a1)
-                .type(UserType.MODERATOR)
+                .type(UserType.MEMBER)
                 .status(UserStatus.DISABLED)
                 .build();
 
@@ -99,7 +99,7 @@ public class UserRepositoryTest {
                 .verificationKey("DEF")
                 .phoneNumber(p2)
                 .address(a2)
-                .type(UserType.ADMINISTRATOR)
+                .type(UserType.GUEST)
                 .status(UserStatus.ACTIVE)
                 .build();
 
@@ -182,7 +182,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByType() {
-        UserFilter filter = UserFilter.builder().type(Collections.singletonList(UserType.ADMINISTRATOR)).build();
+        UserFilter filter = UserFilter.builder().type(Collections.singletonList(UserType.GUEST)).build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -209,20 +209,20 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterWithComplicatedFilter() {
-        UserFilter filter = UserFilter.builder().email("B").type(Collections.singletonList(UserType.MODERATOR)).build();
+        UserFilter filter = UserFilter.builder().email("B").type(Collections.singletonList(UserType.MEMBER)).build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
         assertTrue(userList.contains(u1));
 
-        filter.setType(Collections.singletonList(UserType.MEMBER));
+        filter.setType(Collections.singletonList(UserType.GUEST));
         userList = users.filter(filter);
         assertTrue(userList.isEmpty());
 
-        filter.setEmail("H");
+        filter.setEmail("E");
         userList = users.filter(filter);
         assertEquals(1, userList.size());
-        assertTrue(userList.contains(u3));
+        assertTrue(userList.contains(u2));
     }
 
     @Test
@@ -282,8 +282,8 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindByType() {
-        List<User> expected = List.of(u1);
-        List<User> actual = users.findByType(UserType.MODERATOR);
+        List<User> expected = List.of(u2);
+        List<User> actual = users.findByType(UserType.GUEST);
         assertEquals(expected, actual);
     }
 
