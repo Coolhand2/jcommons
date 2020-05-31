@@ -85,7 +85,7 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
 
     @Override
     protected boolean isEqualTo(User that) {
-        return EqualsBuilder.reflectionEquals(this, that);
+        return EqualsBuilder.reflectionEquals(this, that, "preferences");
     }
 
     @Override

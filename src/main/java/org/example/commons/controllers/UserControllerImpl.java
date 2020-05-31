@@ -14,13 +14,6 @@ public final class UserControllerImpl implements UserController {
     @Inject
     private transient UserService userService;
 
-    @Inject
-    private transient ExecutorService executorService;
-
-    private boolean searchingFlag = false;
-
-    private boolean savingFlag = false;
-
     private List<User> userList = new ArrayList<>();
 
     private UserFilter userFilter = UserFilter.builder().build();
@@ -31,11 +24,6 @@ public final class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ExecutorService getExecutorService() {
-        return executorService;
-    }
-
-    @Override
     public List<User> getUserList() {
         return userList;
     }
@@ -43,26 +31,6 @@ public final class UserControllerImpl implements UserController {
     @Override
     public void setUserList(List<User> userList) {
         this.userList = userList;
-    }
-
-    @Override
-    public boolean getSearchingFlag() {
-        return searchingFlag;
-    }
-
-    @Override
-    public void setSearchingFlag(boolean flag) {
-        searchingFlag = flag;
-    }
-
-    @Override
-    public boolean getSavingFlag() {
-        return savingFlag;
-    }
-
-    @Override
-    public void setSavingFlag(boolean flag) {
-        savingFlag = flag;
     }
 
     @Override

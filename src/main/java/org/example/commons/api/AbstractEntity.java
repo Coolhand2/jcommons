@@ -1,5 +1,8 @@
 package org.example.commons.api;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 abstract public class AbstractEntity<T> {
 
     /**
@@ -16,5 +19,10 @@ abstract public class AbstractEntity<T> {
     @Override
     public boolean equals(Object object) {
         return isEqualTo((T) object);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }
