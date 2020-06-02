@@ -3,6 +3,7 @@ package org.example.commons.entities;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -57,10 +58,10 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     private String verificationKey = "";
 
     @Builder.Default
-    private PhoneNumber phoneNumber = PhoneNumber.DEFAULT.copy();
+    private PhoneNumber phoneNumber = new PhoneNumber();
 
     @Builder.Default
-    private Address address = Address.DEFAULT.copy();
+    private Address address = new Address();
 
     @ManyToMany
     @Builder.Default
@@ -68,11 +69,18 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private UserType type = UserType.MEMBER;
+    private UserType type = UserType.GUEST;
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private UserStatus status = UserStatus.UNVERIFIED;
+
+    private UserRole role = new UserRole();
+
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private List<UserPermission> permissions = new ArrayList<>();
 
     @Transient
     @Builder.Default

@@ -1,8 +1,11 @@
 package org.example.commons.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -35,6 +38,10 @@ public class Group extends AbstractEntity<Group> {
     @Builder.Default
     private String description = "";
 
+    @OneToMany
+    @Builder.Default
+    private List<Membership> memberships = new ArrayList();
+
     @Builder.Default
     @Transient
     private boolean editing = false;
@@ -46,6 +53,6 @@ public class Group extends AbstractEntity<Group> {
 
     @Override
     protected boolean isEqualTo(Group that) {
-        return EqualsBuilder.reflectionEquals(this, that);
+        return EqualsBuilder.reflectionEquals(this, that, "memberships");
     }
 }
