@@ -6,10 +6,12 @@ import javax.inject.Inject;
 import org.example.commons.entities.Address;
 import org.example.commons.entities.PhoneNumber;
 import org.example.commons.entities.User;
+import org.example.commons.entities.UserRole;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.UserType;
 import org.example.commons.entities.filters.UserFilter;
 import org.example.commons.repositories.api.UserRepository;
+import org.example.commons.repositories.api.UserRoleRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -36,10 +38,18 @@ public class UserRepositoryTest {
     @Inject
     private UserRepository users;
 
+    @Inject
+    private UserRoleRepository userRoles;
+
     private User u1, u2, u3;
+
+    private UserRole r1;
 
     @Before
     public void setup() {
+        r1 = UserRole.builder().build();
+        userRoles.create(r1);
+
         PhoneNumber p1 = PhoneNumber.builder()
                 .areaCode("123")
                 .frontThree("123")
@@ -88,6 +98,7 @@ public class UserRepositoryTest {
                 .verificationKey("ABC")
                 .phoneNumber(p1)
                 .address(a1)
+                .role(r1)
                 .type(UserType.MEMBER)
                 .status(UserStatus.DISABLED)
                 .build();
@@ -99,6 +110,7 @@ public class UserRepositoryTest {
                 .verificationKey("DEF")
                 .phoneNumber(p2)
                 .address(a2)
+                .role(r1)
                 .type(UserType.GUEST)
                 .status(UserStatus.ACTIVE)
                 .build();
@@ -110,6 +122,7 @@ public class UserRepositoryTest {
                 .verificationKey("GHI")
                 .phoneNumber(p3)
                 .address(a3)
+                .role(r1)
                 .type(UserType.MEMBER)
                 .status(UserStatus.UNVERIFIED)
                 .build();

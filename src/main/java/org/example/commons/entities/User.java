@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.example.commons.api.AbstractEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +41,8 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     public static Comparator<User> defaultSort = Comparator.comparing(User::getUsername);
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
+
+    private static final List<String> EXCLUDED_FIELDS = List.of("preferences", "permissions", "phoneNumber", "address");
 
 
     @Id
@@ -67,18 +72,20 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     @Builder.Default
     private List<PreferenceValue> preferences = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Builder.Default
     private UserType type = UserType.GUEST;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Builder.Default
     private UserStatus status = UserStatus.UNVERIFIED;
 
+    @Builder.Default
+    @ManyToOne
     private UserRole role = new UserRole();
 
     @ElementCollection
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Builder.Default
     private List<UserPermission> permissions = new ArrayList<>();
 
@@ -93,7 +100,7 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
 
     @Override
     protected boolean isEqualTo(User that) {
-        return EqualsBuilder.reflectionEquals(this, that, "preferences");
+        return EqualsBuilder.reflectionEquals(this, that, EXCLUDED_FIELDS);
     }
 
     @Override
@@ -119,5 +126,21 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
 
     public boolean isDisabled() {
         return UserStatus.DISABLED == status;
+    }
+
+    public boolean canEditUser() {
+        return permissions.contains(UserPermission.EDIT_USER);
+    }
+
+    public boolean canEditGroup() {
+        return permissions.contains(UserPermission.EDIT_GROUP);
+    }
+
+    public boolean canEditRoles() {
+        return permissions.contains(UserPermission.EDIT_ROLES);
+    }
+
+    public boolean canEditConfiguration() {
+        return permissions.contains(UserPermission.EDIT_CONFIGURATION);
     }
 }

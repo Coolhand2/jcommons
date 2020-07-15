@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import org.example.commons.entities.User;
+import org.example.commons.entities.UserRole;
 import org.example.commons.entities.User_;
 import org.example.commons.entities.dtos.UserDataTransfer;
 import org.example.commons.repositories.api.UserRepository;
+import org.example.commons.repositories.api.UserRoleRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -33,13 +35,19 @@ public class ProjectedRepositoryTest {
     @Inject
     private UserRepository users;
 
+    @Inject
+    private UserRoleRepository userRoles;
+
     private UserDataTransfer udt1, udt2, udt3;
 
     @Before
     public void setup() {
-        User u1 = User.builder().username("ABC").pkiDn("ZYX").build();
-        User u2 = User.builder().username("CDE").pkiDn("XWV").build();
-        User u3 = User.builder().username("EFG").pkiDn("VUT").build();
+        UserRole r1 = UserRole.builder().build();
+        userRoles.create(r1);
+
+        User u1 = User.builder().username("ABC").pkiDn("ZYX").role(r1).build();
+        User u2 = User.builder().username("CDE").pkiDn("XWV").role(r1).build();
+        User u3 = User.builder().username("EFG").pkiDn("VUT").role(r1).build();
         users.create(u1, u2, u3);
         udt1 = UserDataTransfer.from(u1);
         udt2 = UserDataTransfer.from(u2);

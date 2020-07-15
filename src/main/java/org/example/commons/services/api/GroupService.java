@@ -10,6 +10,7 @@ import org.example.commons.repositories.api.MembershipRepository;
 
 public interface GroupService {
     GroupRepository getGroupRepository();
+
     MembershipRepository getMembershipRepository();
 
     default void saveNewGroup(Group newGroup) {

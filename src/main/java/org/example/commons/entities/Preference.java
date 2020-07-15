@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.example.commons.api.AbstractEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,6 @@ public class Preference extends AbstractEntity<Preference> {
     public Preference copy() {
         return this.toBuilder().build();
     }
-
     @Override
     protected boolean isEqualTo(Preference that) {
         return EqualsBuilder.reflectionEquals(this, that);

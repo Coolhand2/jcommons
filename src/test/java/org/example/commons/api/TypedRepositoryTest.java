@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import org.example.commons.entities.User;
+import org.example.commons.entities.UserRole;
 import org.example.commons.entities.User_;
 import org.example.commons.repositories.api.UserRepository;
+import org.example.commons.repositories.api.UserRoleRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -34,13 +36,20 @@ public class TypedRepositoryTest {
     @Inject
     private UserRepository users;
 
+    @Inject
+    private UserRoleRepository userRoles;
+
     private User u1, u2, u3;
+
+    private UserRole r1;
 
     @Before
     public void setup() {
-        u1 = User.builder().username("ABC").pkiDn("ZYX").build();
-        u2 = User.builder().username("CDE").pkiDn("WVU").build();
-        u3 = User.builder().username("EFG").pkiDn("TSR").build();
+        r1 = UserRole.builder().build();
+        userRoles.create(r1);
+        u1 = User.builder().username("ABC").pkiDn("ZYX").role(r1).build();
+        u2 = User.builder().username("CDE").pkiDn("WVU").role(r1).build();
+        u3 = User.builder().username("EFG").pkiDn("TSR").role(r1).build();
         users.create(u1, u2, u3);
     }
 
