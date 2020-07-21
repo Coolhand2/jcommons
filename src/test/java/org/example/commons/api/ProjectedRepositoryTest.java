@@ -28,7 +28,7 @@ public class ProjectedRepositoryTest {
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
                 .addPackages(true, "org.example")
-                .addAsResource("META-INF/test-persistence.xml")
+                .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
