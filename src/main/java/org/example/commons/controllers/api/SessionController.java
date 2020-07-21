@@ -11,6 +11,6 @@ public interface SessionController {
         return (User) FacesContext.getCurrentInstance()
                 .getExternalContext()
                 .getSessionMap()
-                .getOrDefault(USER_SESSION_KEY, new User());
+                .getOrDefault(USER_SESSION_KEY, User.builder().build());
     }
 }
