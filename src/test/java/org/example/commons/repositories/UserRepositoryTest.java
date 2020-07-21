@@ -31,7 +31,7 @@ public class UserRepositoryTest {
     public static Archive<?> deploy() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addPackages(true, "org.example")
-                .addAsResource("META-INF/test-persistence.xml")
+                .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -104,10 +104,10 @@ public class UserRepositoryTest {
                 .build();
 
         u2 = User.builder()
-                .username("DEF")
-                .email("DEF")
-                .pkiDn("DEF")
-                .verificationKey("DEF")
+                .username("CDE")
+                .email("CDE")
+                .pkiDn("CDE")
+                .verificationKey("CDE")
                 .phoneNumber(p2)
                 .address(a2)
                 .role(r1)
@@ -116,10 +116,10 @@ public class UserRepositoryTest {
                 .build();
 
         u3 = User.builder()
-                .username("GHI")
-                .email("GHI")
-                .pkiDn("GHI")
-                .verificationKey("GHI")
+                .username("EFG")
+                .email("EFG")
+                .pkiDn("EFG")
+                .verificationKey("EFG")
                 .phoneNumber(p3)
                 .address(a3)
                 .role(r1)
@@ -141,7 +141,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByUsername() {
-        UserFilter filter = UserFilter.builder().username("E").build();
+        UserFilter filter = UserFilter.builder().username("D").build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -150,7 +150,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByEmail() {
-        UserFilter filter = UserFilter.builder().email("E").build();
+        UserFilter filter = UserFilter.builder().email("D").build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -159,7 +159,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByPki() {
-        UserFilter filter = UserFilter.builder().pkiDn("E").build();
+        UserFilter filter = UserFilter.builder().pkiDn("D").build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -168,7 +168,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByVerification() {
-        UserFilter filter = UserFilter.builder().verificationKey("E").build();
+        UserFilter filter = UserFilter.builder().verificationKey("D").build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -186,7 +186,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testFilterByAddress() {
-        UserFilter filter = UserFilter.builder().address("E").build();
+        UserFilter filter = UserFilter.builder().address("D").build();
 
         List<User> userList = users.filter(filter);
         assertEquals(1, userList.size());
@@ -232,7 +232,14 @@ public class UserRepositoryTest {
         userList = users.filter(filter);
         assertTrue(userList.isEmpty());
 
-        filter.setEmail("E");
+        filter.setType(Collections.emptyList());
+        filter.setEmail("C");
+        userList = users.filter(filter);
+        assertEquals(2, userList.size());
+        assertTrue(userList.contains(u1));
+        assertTrue(userList.contains(u2));
+
+        filter.setEmail("D");
         userList = users.filter(filter);
         assertEquals(1, userList.size());
         assertTrue(userList.contains(u2));

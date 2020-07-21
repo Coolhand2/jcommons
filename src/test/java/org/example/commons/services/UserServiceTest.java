@@ -1,5 +1,6 @@
 package org.example.commons.services;
 
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import org.example.commons.entities.User;
@@ -33,7 +34,7 @@ public class UserServiceTest {
     public static Archive<?> deploy() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addPackages(true, "org.example")
-                .addAsResource("META-INF/test-persistence.xml")
+                .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -66,6 +67,21 @@ public class UserServiceTest {
         UserFilter filter = UserFilter.builder().username("C").build();
         List<User> actual = userService.searchUsers(filter);
         assertEquals(2, actual.size());
+        LOG.info("{}({}), {}({}) == {}({}), {}({})",
+                u1.getId(), u1.hashCode(),
+                u2.getId(), u2.hashCode(),
+                actual.get(0).getId(), actual.get(0).hashCode(),
+                actual.get(1).getId(), actual.get(1).hashCode());
+        LOG.info("Does List contain u1? {}", actual.contains(u1));
+        LOG.info("{}", actual.get(0).equals(u1));
+        LOG.info("{}", u1.equals(actual.get(0)));
+        LOG.info("Does List contain u2? {}", actual.contains(u2));
+        LOG.info("{}", actual.get(1).equals(u2));
+        LOG.info("{}", u2.equals(actual.get(1)));
+        LOG.info("{}", u1);
+        LOG.info("{}", actual.get(0));
+        LOG.info("{}", u2);
+        LOG.info("{}", actual.get(1));
         assertTrue(actual.contains(u1));
         assertTrue(actual.contains(u2));
     }

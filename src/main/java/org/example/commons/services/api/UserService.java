@@ -5,6 +5,7 @@ import org.example.commons.api.TypedFilter;
 import org.example.commons.entities.User;
 import org.example.commons.entities.UserRole;
 import org.example.commons.entities.UserStatus;
+import org.example.commons.entities.filters.UserFilter;
 import org.example.commons.repositories.api.ConfigurationRepository;
 import org.example.commons.repositories.api.UserRepository;
 import org.example.commons.utilities.api.SecurityUtility;
@@ -12,14 +13,13 @@ import org.example.commons.utilities.api.MailUtility;
 
 public interface UserService {
 
-
     UserRepository getUserRepository();
 
     SecurityUtility getSecurityUtility();
 
     MailUtility getMailUtility();
 
-    default List<User> searchUsers(TypedFilter<User> filter) {
+    default List<User> searchUsers(UserFilter filter) {
         return getUserRepository().filter(filter);
     }
 

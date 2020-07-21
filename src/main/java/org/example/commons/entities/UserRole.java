@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.example.commons.api.AbstractEntity;
 
 @Builder(toBuilder=true)
@@ -48,7 +51,17 @@ public class UserRole extends AbstractEntity<UserRole> {
     }
 
     @Override
+    protected int getHashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, EXCLUDED_FIELDS);
+    }
+
+    @Override
     protected boolean isEqualTo(UserRole that) {
         return EqualsBuilder.reflectionEquals(this, that, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    protected String getStringRepresentation() {
+        return ReflectionToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

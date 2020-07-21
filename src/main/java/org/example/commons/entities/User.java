@@ -2,11 +2,15 @@ package org.example.commons.entities;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -21,6 +25,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.example.commons.api.AbstractEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +48,7 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
 
-    private static final List<String> EXCLUDED_FIELDS = List.of("preferences", "permissions", "phoneNumber", "address");
-
+    private static final List<String> EXCLUDED_FIELDS = List.of("preferences", "permissions");
 
     @Id
     @GeneratedValue
@@ -70,13 +75,13 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
 
     @ManyToMany
     @Builder.Default
-    private List<PreferenceValue> preferences = new ArrayList<>();
+    private Set<PreferenceValue> preferences = new HashSet<>();
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     @Builder.Default
     private UserType type = UserType.GUEST;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     @Builder.Default
     private UserStatus status = UserStatus.UNVERIFIED;
 
@@ -85,9 +90,9 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     private UserRole role = new UserRole();
 
     @ElementCollection
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     @Builder.Default
-    private List<UserPermission> permissions = new ArrayList<>();
+    private Set<UserPermission> permissions = new HashSet<>();
 
     @Transient
     @Builder.Default
@@ -99,8 +104,18 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     }
 
     @Override
+    protected int getHashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, EXCLUDED_FIELDS);
+    }
+
+    @Override
     protected boolean isEqualTo(User that) {
         return EqualsBuilder.reflectionEquals(this, that, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    protected String getStringRepresentation() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.JSON_STYLE);
     }
 
     @Override
