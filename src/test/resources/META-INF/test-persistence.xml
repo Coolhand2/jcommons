@@ -6,7 +6,7 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
     <persistence-unit name="AppDB">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>org.example.*</class>
+        <class>org.example.entities.*</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:app.sql" />
