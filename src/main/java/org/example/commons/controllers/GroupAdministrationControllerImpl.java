@@ -15,7 +15,7 @@ public class GroupAdministrationControllerImpl implements GroupAdministrationCon
 
     private Group newGroup = new Group();
 
-    private GroupFilter groupFilter = new GroupFilter();
+    private GroupFilter groupFilter = GroupFilter.builder().build();
 
     private List<Group> groupList = new ArrayList<>();
 

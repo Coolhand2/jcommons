@@ -1,7 +1,10 @@
 package org.example.commons.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.example.commons.api.AbstractEntity;
 
 @Builder(toBuilder = true)
@@ -28,6 +32,8 @@ public class Group extends AbstractEntity<Group> {
 
     public static final Group DEFAULT = Group.builder().build();
 
+    private static final List<String> EXCLUDED_FIELDS = List.of("memberships");
+
     @Id
     @GeneratedValue
     @Builder.Default
@@ -39,9 +45,9 @@ public class Group extends AbstractEntity<Group> {
     @Builder.Default
     private String description = "";
 
-    @OneToMany
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Membership> memberships = new ArrayList();
+    private Set<Membership> memberships = new HashSet<>();
 
     @Builder.Default
     @Transient
@@ -53,7 +59,22 @@ public class Group extends AbstractEntity<Group> {
     }
 
     @Override
+    protected int getHashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, EXCLUDED_FIELDS);
+    }
+
+    @Override
     protected boolean isEqualTo(Group that) {
-        return EqualsBuilder.reflectionEquals(this, that, "memberships");
+        return EqualsBuilder.reflectionEquals(this, that, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    protected String getStringRepresentation() {
+        return ReflectionToStringBuilder.toStringExclude(this, EXCLUDED_FIELDS);
+    }
+
+    public void addMember(User user) {
+        Membership membership = Membership.builder().group(this).user(user).build();
+        this.memberships.add(membership);
     }
 }
