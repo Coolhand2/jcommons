@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.example.commons.api.AbstractEntity;
 
 import javax.persistence.Entity;
@@ -37,7 +38,17 @@ public class Configuration extends AbstractEntity<Configuration> {
     }
 
     @Override
+    protected int getHashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
     protected boolean isEqualTo(Configuration that) {
         return EqualsBuilder.reflectionEquals(this, that);
+    }
+
+    @Override
+    protected String getStringRepresentation() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

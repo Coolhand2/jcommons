@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.example.commons.api.AbstractEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ public class Preference extends AbstractEntity<Preference> {
 
     public static final Preference DEFAULT = Preference.builder().build();
 
+    private static final List<String> EXCLUDED_FIELDS = List.of("defaults", "options");
+
     @Id
     @GeneratedValue
     @Builder.Default
@@ -42,7 +45,7 @@ public class Preference extends AbstractEntity<Preference> {
     @Builder.Default
     private String name = "";
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     @Builder.Default
     private PreferenceType type = PreferenceType.STRING;
 
@@ -62,8 +65,19 @@ public class Preference extends AbstractEntity<Preference> {
     public Preference copy() {
         return this.toBuilder().build();
     }
+
+    @Override
+    protected int getHashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, EXCLUDED_FIELDS);
+    }
+
     @Override
     protected boolean isEqualTo(Preference that) {
-        return EqualsBuilder.reflectionEquals(this, that);
+        return EqualsBuilder.reflectionEquals(this, that, EXCLUDED_FIELDS);
+    }
+
+    @Override
+    protected String getStringRepresentation() {
+        return ReflectionToStringBuilder.toStringExclude(this, EXCLUDED_FIELDS);
     }
 }

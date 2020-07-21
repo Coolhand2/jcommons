@@ -15,7 +15,14 @@ abstract public class AbstractEntity<T> {
      */
 
     abstract public T copy();
+    abstract protected int getHashCode();
     abstract protected boolean isEqualTo(T that);
+    abstract protected String getStringRepresentation();
+
+    @Override
+    public int hashCode() {
+        return getHashCode();
+    }
 
     @Override
     public boolean equals(Object object) {
@@ -24,6 +31,6 @@ abstract public class AbstractEntity<T> {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+        return getStringRepresentation();
     }
 }
