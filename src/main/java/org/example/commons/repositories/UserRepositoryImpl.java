@@ -16,6 +16,7 @@ import org.example.commons.entities.Address_;
 import org.example.commons.entities.PhoneNumber;
 import org.example.commons.entities.PhoneNumber_;
 import org.example.commons.entities.User;
+import org.example.commons.entities.UserRole_;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.UserType;
 import org.example.commons.entities.User_;
@@ -35,7 +36,7 @@ public final class UserRepositoryImpl implements UserRepository {
     @Override
     public List<SingularAttribute<User, ?>> getProjectionList() {
         return Arrays.asList(
-                User_.id, User_.username, User_.email, User_.phoneNumber, User_.address, User_.type, User_.status
+                User_.id, User_.username, User_.email, User_.phoneNumber, User_.address, User_.type, User_.status, User_.role
         );
     }
 
@@ -102,6 +103,9 @@ public final class UserRepositoryImpl implements UserRepository {
         }
         if (!filter.getStatus().isEmpty()) {
             filter.getStatus().forEach(s -> predicates.add(builder.equal(root.get(User_.status), s)));
+        }
+        if (!filter.getRole().isBlank()) {
+            predicates.add(builder.like(builder.lower(root.get(User_.role).get(UserRole_.name)), '%' + filter.getRole().toLowerCase() + '%'));
         }
         query.select(root);
         if (predicates.size() == 1) {

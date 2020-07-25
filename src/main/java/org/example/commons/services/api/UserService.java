@@ -54,4 +54,8 @@ public interface UserService {
         getUserRepository().create(newUser);
         getMailUtility().sendEmail("system@example.org", newUser.getEmail(), "Verify Registration!", "Please verify your user registration!");
     }
+
+    default User getUserById(Long id) {
+        return getUserRepository().findById(id);
+    }
 }

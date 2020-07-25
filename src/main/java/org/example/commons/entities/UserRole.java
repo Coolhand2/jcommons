@@ -30,6 +30,8 @@ import org.example.commons.api.AbstractEntity;
 @Table(name = "user_roles")
 public class UserRole extends AbstractEntity<UserRole> {
 
+    public static final UserRole DEFAULT = UserRole.builder().build();
+
     private static final List<String> EXCLUDED_FIELDS = List.of("permissionsGranted");
 
     @Id
@@ -40,9 +42,9 @@ public class UserRole extends AbstractEntity<UserRole> {
     @Builder.Default
     private String name = "";
 
-    @Builder.Default
     @ElementCollection
-    @Enumerated(EnumType.STRING)
+    @Enumerated
+    @Builder.Default
     private List<UserPermission> permissionsGranted = new ArrayList<>();
 
     @Override

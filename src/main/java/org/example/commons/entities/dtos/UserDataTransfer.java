@@ -7,6 +7,7 @@ import lombok.Data;
 import org.example.commons.entities.Address;
 import org.example.commons.entities.PhoneNumber;
 import org.example.commons.entities.User;
+import org.example.commons.entities.UserRole;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.UserType;
 
@@ -36,6 +37,9 @@ public class UserDataTransfer {
     @Builder.Default
     private UserStatus status = UserStatus.UNVERIFIED;
 
+    @Builder.Default
+    private UserRole role = UserRole.DEFAULT.copy();
+
     public static UserDataTransfer from(User u) {
         return builder()
                 .id(u.getId())
@@ -45,6 +49,7 @@ public class UserDataTransfer {
                 .address(u.getAddress())
                 .type(u.getType())
                 .status(u.getStatus())
+                .role(u.getRole())
                 .build();
     }
 

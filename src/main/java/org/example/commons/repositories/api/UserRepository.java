@@ -7,6 +7,7 @@ import org.example.commons.api.TypedRepository;
 import org.example.commons.entities.Address;
 import org.example.commons.entities.PhoneNumber;
 import org.example.commons.entities.User;
+import org.example.commons.entities.UserRole;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.UserType;
 import org.example.commons.entities.User_;
@@ -43,5 +44,9 @@ public interface UserRepository extends TypedRepository<User, Long>, ProjectedRe
 
     default List<User> findByStatus(UserStatus status) {
         return findByColumn(User_.status, status);
+    }
+
+    default List<User> findByRole(UserRole role) {
+        return findByColumn(User_.role, role);
     }
 }

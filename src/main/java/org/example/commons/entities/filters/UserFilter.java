@@ -40,4 +40,7 @@ public class UserFilter implements TypedFilter<User> {
 
     @Builder.Default
     private List<UserStatus> status = List.of();
+
+    @Builder.Default
+    private String role = "";
 }
