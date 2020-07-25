@@ -2,6 +2,7 @@ package org.example.commons.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -49,11 +50,11 @@ public class Preference extends AbstractEntity<Preference> {
     @Builder.Default
     private PreferenceType type = PreferenceType.STRING;
 
-    @OneToMany
+    @OneToMany(mappedBy = "preference", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PreferenceValue> defaults = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "preference", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PreferenceValue> options = new ArrayList<>();
 

@@ -33,7 +33,7 @@ public class PreferenceValue extends AbstractEntity<PreferenceValue> {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Preference preference;
 
     private String value;
