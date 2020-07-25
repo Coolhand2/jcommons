@@ -166,6 +166,15 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.5</version>
+                <configuration>
+                    <includes>
+                        <include>org/example/commons/api/*</include>
+                        <include>org/example/commons/controllers/api/*</include>
+                        <include>org/example/commons/utilities/api/*</include>
+                        <include>org/example/commons/repositories/**/*</include>
+                        <include>org/example/commons/services/api/*</include>
+                    </includes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>jacoco-initialize</id>
