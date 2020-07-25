@@ -1,7 +1,9 @@
 package org.example.commons.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -39,9 +41,9 @@ public class MembershipRole extends AbstractEntity<MembershipRole> {
     private String name = "";
 
     @ElementCollection
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     @Builder.Default
-    private List<MembershipPermission> permissions = new ArrayList<>();
+    private Set<MembershipPermission> permissions = new HashSet<>();
 
     @Override
     public MembershipRole copy() {

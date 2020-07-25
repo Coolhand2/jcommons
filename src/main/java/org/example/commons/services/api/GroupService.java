@@ -13,6 +13,8 @@ public interface GroupService {
 
     GroupRepository getGroupRepository();
 
+    MembershipRepository getMembershipRepository();
+
     default void saveNewGroup(Group newGroup) {
         getGroupRepository().create(newGroup);
     }
@@ -37,10 +39,12 @@ public interface GroupService {
 
     default void removeUserFromGroups(User user) {
         List<Membership> memberships = getMembershipRepository().findByUser(user);
-        List<Group> groups = memberships.parallelStream().map(m -> m.getGroup()).collect(Collectors.toList());
+        List<Group> groups = memberships.parallelStream().map(Membership::getGroup).collect(Collectors.toList());
         groups.forEach((g) -> g.getMemberships().removeAll(memberships));
         getGroupRepository().update(groups);
     }
 
-    MembershipRepository getMembershipRepository();
+    default Group getGroupById(Long id) {
+        return getGroupRepository().findById(id);
+    }
 }

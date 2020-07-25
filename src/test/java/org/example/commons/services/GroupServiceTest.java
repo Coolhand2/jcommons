@@ -107,4 +107,16 @@ public class GroupServiceTest {
         assertTrue(groupList.contains(g1));
         assertEquals(1, groupList.size());
     }
+
+    @Test
+    public void testRemoveUserFromGroups() {
+        groupService.addUserToGroup(u1, g2);
+        groupService.addUserToGroup(u2, g2);
+        groupService.addUserToGroup(u3, g2);
+        assertEquals(3, g2.getMemberships().size());
+
+        groupService.removeUserFromGroups(u1);
+        g2 = groupService.getGroupById(g2.getId());
+        assertEquals(2, g2.getMemberships().size());
+    }
 }
