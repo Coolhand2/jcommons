@@ -29,7 +29,7 @@ public interface MailUtility {
     }
 
     default Session getMailSession() {
-        return Session.getInstance(PROPERTIES, null);
+        return Session.getInstance(getProperties(), null);
     }
 
     default void sendEmail(String from, String to, String subject, String text) {
