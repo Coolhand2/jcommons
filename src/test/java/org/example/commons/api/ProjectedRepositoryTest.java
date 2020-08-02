@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.example.commons.entities.User;
 import org.example.commons.entities.UserRole;
 import org.example.commons.entities.User_;
-import org.example.commons.entities.dtos.UserDataTransfer;
+import org.example.commons.entities.projections.UserProjection;
 import org.example.commons.repositories.api.UserRepository;
 import org.example.commons.repositories.api.UserRoleRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -38,7 +38,7 @@ public class ProjectedRepositoryTest {
     @Inject
     private UserRoleRepository userRoles;
 
-    private UserDataTransfer udt1, udt2, udt3;
+    private UserProjection udt1, udt2, udt3;
 
     @Before
     public void setup() {
@@ -49,85 +49,85 @@ public class ProjectedRepositoryTest {
         User u2 = User.builder().username("CDE").pkiDn("XWV").role(r1).build();
         User u3 = User.builder().username("EFG").pkiDn("VUT").role(r1).build();
         users.create(u1, u2, u3);
-        udt1 = UserDataTransfer.from(u1);
-        udt2 = UserDataTransfer.from(u2);
-        udt3 = UserDataTransfer.from(u3);
+        udt1 = UserProjection.from(u1);
+        udt2 = UserProjection.from(u2);
+        udt3 = UserProjection.from(u3);
     }
 
     @Test
     public void testFindAllProjected() {
-        List<UserDataTransfer> list = users.findAllProjected();
+        List<UserProjection> list = users.findAllProjected();
         assertEquals(3, list.size());
         assertTrue(list.containsAll(Arrays.asList(udt1, udt2, udt3)));
     }
 
     @Test
     public void testFindAllProjectedWithComparator() {
-        List<UserDataTransfer> expected = List.of(udt1, udt2, udt3);
-        List<UserDataTransfer> actual = users.findAllProjected(UserDataTransfer.defaultSort);
+        List<UserProjection> expected = List.of(udt1, udt2, udt3);
+        List<UserProjection> actual = users.findAllProjected(UserProjection.defaultSort);
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindAllProjectedWithPredicate() {
-        List<UserDataTransfer> expected = List.of(udt1, udt2);
-        List<UserDataTransfer> actual = users.findAllProjected(udt -> udt.getUsername().contains("C"));
+        List<UserProjection> expected = List.of(udt1, udt2);
+        List<UserProjection> actual = users.findAllProjected(udt -> udt.getUsername().contains("C"));
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindAllProjectedWithComparatorAndPredicate() {
-        List<UserDataTransfer> expected = List.of(udt1, udt2);
-        List<UserDataTransfer> actual = users.findAllProjected(UserDataTransfer.defaultSort, udt -> udt.getUsername().contains("C"));
+        List<UserProjection> expected = List.of(udt1, udt2);
+        List<UserProjection> actual = users.findAllProjected(UserProjection.defaultSort, udt -> udt.getUsername().contains("C"));
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindByIdProjected() {
-        UserDataTransfer expected = udt1;
-        UserDataTransfer actual = users.findByIdProjected(udt1.getId());
+        UserProjection expected = udt1;
+        UserProjection actual = users.findByIdProjected(udt1.getId());
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindByIdsVarargProjected() {
-        List<UserDataTransfer> expected = List.of(udt1, udt2);
-        List<UserDataTransfer> actual = users.findByIdsProjected(udt1.getId(), udt2.getId());
+        List<UserProjection> expected = List.of(udt1, udt2);
+        List<UserProjection> actual = users.findByIdsProjected(udt1.getId(), udt2.getId());
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindByIdsIterableProjected() {
-        List<UserDataTransfer> expected = List.of(udt1, udt2);
-        List<UserDataTransfer> actual = users.findByIdsProjected(List.of(udt1.getId(), udt2.getId()));
+        List<UserProjection> expected = List.of(udt1, udt2);
+        List<UserProjection> actual = users.findByIdsProjected(List.of(udt1.getId(), udt2.getId()));
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindOneByColumnProjected() {
-        UserDataTransfer expected = udt1;
-        UserDataTransfer actual = users.findOneByColumnProjected(User_.pkiDn, "ZYX");
+        UserProjection expected = udt1;
+        UserProjection actual = users.findOneByColumnProjected(User_.pkiDn, "ZYX");
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindByColumnVarargProjected() {
-        List<UserDataTransfer> expected = List.of(udt1);
-        List<UserDataTransfer> actual = users.findByColumnProjected(User_.pkiDn, "ZYX");
+        List<UserProjection> expected = List.of(udt1);
+        List<UserProjection> actual = users.findByColumnProjected(User_.pkiDn, "ZYX");
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindByColumnIterableProjected() {
-        List<UserDataTransfer> expected = List.of(udt1);
-        List<UserDataTransfer> actual = users.findByColumnProjected(User_.pkiDn, List.of("ZYX"));
+        List<UserProjection> expected = List.of(udt1);
+        List<UserProjection> actual = users.findByColumnProjected(User_.pkiDn, List.of("ZYX"));
         assertEquals(expected, actual);
     }
 
     @Test
     public void testFindOneByColumnsProjected() {
-        UserDataTransfer expected = udt1;
-        UserDataTransfer actual = users.findOneByColumnsProjected(Map.ofEntries(
+        UserProjection expected = udt1;
+        UserProjection actual = users.findOneByColumnsProjected(Map.ofEntries(
                 Map.entry(User_.username, List.of("ABC")),
                 Map.entry(User_.pkiDn, List.of("ZYX"))
         ));
@@ -136,8 +136,8 @@ public class ProjectedRepositoryTest {
 
     @Test
     public void testFindByColumnsProjected() {
-        List<UserDataTransfer> expected = List.of(udt1);
-        List<UserDataTransfer> actual = users.findByColumnsProjected(Map.ofEntries(
+        List<UserProjection> expected = List.of(udt1);
+        List<UserProjection> actual = users.findByColumnsProjected(Map.ofEntries(
                 Map.entry(User_.username, List.of("ABC")),
                 Map.entry(User_.pkiDn, List.of("ZYX"))
         ));

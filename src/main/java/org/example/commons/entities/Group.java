@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -48,6 +51,10 @@ public class Group extends AbstractEntity<Group> {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<Membership> memberships = new HashSet<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<MembershipRequest> membershipRequests = new HashSet<>();
 
     @Builder.Default
     @Transient

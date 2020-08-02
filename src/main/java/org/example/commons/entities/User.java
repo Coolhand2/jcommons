@@ -1,25 +1,24 @@
 package org.example.commons.entities;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +29,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.example.commons.api.AbstractEntity;
-import org.hibernate.annotations.ManyToAny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +75,7 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     private Address address = new Address();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id")
     @Builder.Default
     private Set<PreferenceValue> preferences = new HashSet<>();
 
@@ -89,14 +87,13 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
     @Builder.Default
     private UserStatus status = UserStatus.UNVERIFIED;
 
-    @Builder.Default
     @ManyToOne
+    @Builder.Default
     private UserRole role = new UserRole();
 
-    @ElementCollection
-    @Enumerated
+    @ManyToMany
     @Builder.Default
-    private Set<UserPermission> permissions = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 
     @Transient
     @Builder.Default
@@ -127,39 +124,19 @@ public class User extends AbstractEntity<User> implements Comparable<User> {
         return defaultSort.compare(this, that);
     }
 
-    public boolean isGuest() {
-        return UserType.GUEST == type;
+    public boolean is(UserType type) {
+        return type == this.type;
     }
 
-    public boolean isMember() {
-        return UserType.MEMBER == type;
+    public boolean is(UserStatus status) {
+        return status == this.status;
     }
 
-    public boolean isUnverified() {
-        return UserStatus.UNVERIFIED == status;
+    public boolean is(UserRole role) {
+        return role == this.role;
     }
 
-    public boolean isActive() {
-        return UserStatus.ACTIVE == status;
-    }
-
-    public boolean isDisabled() {
-        return UserStatus.DISABLED == status;
-    }
-
-    public boolean canEditUser() {
-        return permissions.contains(UserPermission.EDIT_USER);
-    }
-
-    public boolean canEditGroup() {
-        return permissions.contains(UserPermission.EDIT_GROUP);
-    }
-
-    public boolean canEditRoles() {
-        return permissions.contains(UserPermission.EDIT_ROLES);
-    }
-
-    public boolean canEditConfiguration() {
-        return permissions.contains(UserPermission.EDIT_CONFIGURATION);
+    public boolean can(Permission permission) {
+        return this.permissions.contains(permission);
     }
 }

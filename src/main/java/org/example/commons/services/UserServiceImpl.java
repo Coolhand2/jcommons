@@ -3,6 +3,7 @@ package org.example.commons.services;
 import javax.inject.Inject;
 
 import org.example.commons.repositories.api.UserRepository;
+import org.example.commons.services.api.MailService;
 import org.example.commons.services.api.UserService;
 import org.example.commons.utilities.api.MailUtility;
 import org.example.commons.utilities.api.SecurityUtility;
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private SecurityUtility security;
 
     @Inject
-    private MailUtility mail;
+    private MailService mail;
 
     @Override
     public UserRepository getUserRepository() {
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MailUtility getMailUtility() {
+    public MailService getMailService() {
         return mail;
     }
 }

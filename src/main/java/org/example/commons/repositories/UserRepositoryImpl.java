@@ -11,16 +11,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.example.commons.api.TypedFilter;
-import org.example.commons.entities.Address;
 import org.example.commons.entities.Address_;
-import org.example.commons.entities.PhoneNumber;
 import org.example.commons.entities.PhoneNumber_;
 import org.example.commons.entities.User;
 import org.example.commons.entities.UserRole_;
-import org.example.commons.entities.UserStatus;
-import org.example.commons.entities.UserType;
 import org.example.commons.entities.User_;
-import org.example.commons.entities.dtos.UserDataTransfer;
+import org.example.commons.entities.projections.UserProjection;
 import org.example.commons.entities.filters.UserFilter;
 import org.example.commons.repositories.api.UserRepository;
 import org.slf4j.Logger;
@@ -41,8 +37,8 @@ public final class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Class<UserDataTransfer> getProjectedClass() {
-        return UserDataTransfer.class;
+    public Class<UserProjection> getProjectedClass() {
+        return UserProjection.class;
     }
 
     @Override

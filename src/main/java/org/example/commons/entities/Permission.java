@@ -1,0 +1,19 @@
+package org.example.commons.entities;
+
+public enum Permission {
+    //User Based Permissions
+    USER_EDIT_USERS,
+    USER_EDIT_GROUPS,
+    USER_EDIT_ROLES,
+    USER_EDIT_CONFIGURATIONS,
+    USER_EDIT_FAQ,
+    USER_EDIT_HELP,
+    USER_EDIT_PREFERENCES,
+
+    //Group Membership-Based Permissions
+    MEMBERSHIP_ADD_MEMBER,
+    MEMBERSHIP_REMOVE_MEMBER,
+    MEMBERSHIP_EDIT_NAME,
+    MEMBERSHIP_EDIT_DESCRIPTION,
+    MEMBERSHIP_MODIFY_MEMBER, MEMBERSHIP_WRITE, MEMBERSHIP_EDIT_ROLE
+}

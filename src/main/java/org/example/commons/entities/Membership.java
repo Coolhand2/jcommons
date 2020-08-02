@@ -1,17 +1,16 @@
 package org.example.commons.entities;
 
-import java.io.Serializable;
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -44,12 +43,13 @@ public class Membership extends AbstractEntity<Membership> {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
-    @Builder.Default
     @Enumerated
-    private MembershipType type = MembershipType.READ_ONLY;
-
+    @ElementCollection
     @Builder.Default
+    private Set<Permission> permissions = new HashSet<>();
+
     @Transient
+    @Builder.Default
     private boolean editing = false;
 
     @Override
@@ -70,6 +70,11 @@ public class Membership extends AbstractEntity<Membership> {
     @Override
     protected String getStringRepresentation() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public static BiPredicate<Membership, Permission> has = (membership, permission) -> membership.permissions.contains(permission);
+    public boolean has(Permission permission) {
+        return Membership.has.test(this, permission);
     }
 
 }

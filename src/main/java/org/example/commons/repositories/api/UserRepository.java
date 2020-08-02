@@ -11,9 +11,9 @@ import org.example.commons.entities.UserRole;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.UserType;
 import org.example.commons.entities.User_;
-import org.example.commons.entities.dtos.UserDataTransfer;
+import org.example.commons.entities.projections.UserProjection;
 
-public interface UserRepository extends TypedRepository<User, Long>, ProjectedRepository<User, Long, UserDataTransfer>, FilteredRepository<User> {
+public interface UserRepository extends TypedRepository<User, Long>, ProjectedRepository<User, Long, UserProjection>, FilteredRepository<User> {
     default User findByUsername(String name) {
         return findOneByColumn(User_.username, name);
     }

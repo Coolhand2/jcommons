@@ -1,11 +1,10 @@
 package org.example.commons.services;
 
-import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import org.example.commons.entities.Configuration;
+import org.example.commons.entities.Permission;
 import org.example.commons.entities.User;
-import org.example.commons.entities.UserPermission;
 import org.example.commons.entities.UserRole;
 import org.example.commons.entities.UserStatus;
 import org.example.commons.entities.filters.UserFilter;
@@ -100,33 +99,33 @@ public class UserServiceTest {
         assertEquals(r2, u1.getRole());
         assertTrue(u1.getPermissions().isEmpty());
 
-        UserRole r3 = UserRole.builder().name("DEF").permissionsGranted(List.of(UserPermission.EDIT_GROUP)).build();
+        UserRole r3 = UserRole.builder().name("DEF").permissionsGranted(List.of(Permission.USER_EDIT_GROUPS)).build();
         userRoles.create(r3);
 
         userService.grantRoleToUser(r3, u1);
         u1 = userService.getUserById(u1.getId());
         assertEquals(r3, u1.getRole());
         assertEquals(1, u1.getPermissions().size());
-        assertTrue(u1.getPermissions().contains(UserPermission.EDIT_GROUP));
+        assertTrue(u1.getPermissions().contains(Permission.USER_EDIT_GROUPS));
     }
 
     @Test
     public void testVerifyUser() {
-        assertTrue(u3.isActive());
+        assertTrue(u3.is(UserStatus.ACTIVE));
         userService.verifyUser(u3, "XYZ");
         u3 = userService.getUserById(u3.getId());
-        assertTrue(u3.isActive());
+        assertTrue(u3.is(UserStatus.ACTIVE));
 
-        assertTrue(u2.isUnverified());
+        assertTrue(u2.is(UserStatus.UNVERIFIED));
         u2.setPkiDn("ABC");
         userService.verifyUser(u2, "WXY");
         u2 = userService.getUserById(u2.getId());
-        assertTrue(u2.isUnverified());
+        assertTrue(u2.is(UserStatus.UNVERIFIED));
 
-        assertTrue(u1.isUnverified());
+        assertTrue(u1.is(UserStatus.UNVERIFIED));
         userService.verifyUser(u1, "XYZ");
         u1 = userService.getUserById(u1.getId());
-        assertTrue(u1.isActive());
+        assertTrue(u1.is(UserStatus.ACTIVE));
     }
 
     @Test

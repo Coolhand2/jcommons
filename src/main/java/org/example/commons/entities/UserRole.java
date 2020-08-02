@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.example.commons.api.AbstractEntity;
 
@@ -30,7 +30,7 @@ import org.example.commons.api.AbstractEntity;
 @Table(name = "user_roles")
 public class UserRole extends AbstractEntity<UserRole> {
 
-    public static final UserRole DEFAULT = UserRole.builder().build();
+    public static final UserRole DEFAULT = new UserRole();
 
     private static final List<String> EXCLUDED_FIELDS = List.of("permissionsGranted");
 
@@ -43,9 +43,9 @@ public class UserRole extends AbstractEntity<UserRole> {
     private String name = "";
 
     @ElementCollection
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Builder.Default
-    private List<UserPermission> permissionsGranted = new ArrayList<>();
+    private List<Permission> permissionsGranted = new ArrayList<>();
 
     @Override
     public UserRole copy() {

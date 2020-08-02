@@ -1,12 +1,10 @@
 package org.example.commons.entities;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,7 +26,7 @@ import org.example.commons.api.AbstractEntity;
 @AllArgsConstructor
 @Entity
 @Table(name = "membership_roles")
-public class MembershipRole extends AbstractEntity<MembershipRole> {
+public class GroupRole extends AbstractEntity<GroupRole> {
 
     private static final List<String> EXCLUDED_FIELDS = List.of("permissions");
 
@@ -43,10 +41,10 @@ public class MembershipRole extends AbstractEntity<MembershipRole> {
     @ElementCollection
     @Enumerated
     @Builder.Default
-    private Set<MembershipPermission> permissions = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 
     @Override
-    public MembershipRole copy() {
+    public GroupRole copy() {
         return toBuilder().build();
     }
 
@@ -56,7 +54,7 @@ public class MembershipRole extends AbstractEntity<MembershipRole> {
     }
 
     @Override
-    protected boolean isEqualTo(MembershipRole that) {
+    protected boolean isEqualTo(GroupRole that) {
         return EqualsBuilder.reflectionEquals(this, that, EXCLUDED_FIELDS);
     }
 

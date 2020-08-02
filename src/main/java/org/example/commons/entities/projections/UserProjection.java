@@ -1,4 +1,4 @@
-package org.example.commons.entities.dtos;
+package org.example.commons.entities.projections;
 
 import java.util.Comparator;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.example.commons.entities.UserType;
 @Builder
 @Data
 @AllArgsConstructor
-public class UserDataTransfer {
+public class UserProjection {
 
     @Builder.Default
     private Long id = 0L;
@@ -40,7 +40,7 @@ public class UserDataTransfer {
     @Builder.Default
     private UserRole role = UserRole.DEFAULT.copy();
 
-    public static UserDataTransfer from(User u) {
+    public static UserProjection from(User u) {
         return builder()
                 .id(u.getId())
                 .username(u.getUsername())
@@ -53,6 +53,6 @@ public class UserDataTransfer {
                 .build();
     }
 
-    public static Comparator<UserDataTransfer> defaultSort = Comparator.comparing(UserDataTransfer::getUsername);
+    public static Comparator<UserProjection> defaultSort = Comparator.comparing(UserProjection::getUsername);
 
 }
