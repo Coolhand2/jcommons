@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import org.example.commons.entities.User;
-import org.example.commons.entities.UserRole;
-import org.example.commons.entities.User_;
-import org.example.commons.repositories.api.UserRepository;
-import org.example.commons.repositories.api.UserRoleRepository;
+import org.example.base.entities.User;
+import org.example.base.entities.UserRole;
+import org.example.base.entities.User_;
+import org.example.base.repositories.UserRepository;
+import org.example.base.repositories.UserRoleRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -61,31 +61,6 @@ public class TypedRepositoryTest {
     }
 
     @Test
-    public void testFindAllWithComparator() {
-        List<User> expected = List.of(u1, u2, u3);
-        List<User> actual = users.findAll(User.defaultSort);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testFindAllWithPredicate() {
-        List<User> actual = users.findAll(u -> u.getUsername().contains("C"));
-        assertEquals(actual.size(), 2);
-        assertFalse(actual.contains(u3));
-
-        actual = users.findAll(u -> u.getUsername().contains("B"));
-        assertEquals(actual.size(), 1);
-        assertTrue(actual.contains(u1));
-    }
-
-    @Test
-    public void testFindAllWithComparatorAndPredicate() {
-        List<User> actual = users.findAll(User.defaultSort, u -> u.getUsername().contains("C"));
-        List<User> expected = List.of(u1, u2);
-        assertEquals(expected, actual);
-    }
-
-    @Test
     public void testFindById() {
         User actual = users.findById(u1.getId());
         assertEquals(u1, actual);
@@ -122,8 +97,8 @@ public class TypedRepositoryTest {
     @Test
     public void testFindOneByColumns() {
         User actual = users.findOneByColumns(Map.ofEntries(
-                Map.entry(User_.username, List.of("ABC")),
-                Map.entry(User_.pkiDn, List.of("ZYX"))
+                Map.entry((root) -> root.get(User_.username), "ABC"),
+                Map.entry((root) -> root.get(User_.pkiDn), "ZYX")
         ));
         User expected = u1.copy();
         assertEquals(expected, actual);
@@ -132,8 +107,8 @@ public class TypedRepositoryTest {
     @Test
     public void testFindByColumns() {
         List<User> actual = users.findByColumns(Map.ofEntries(
-                Map.entry(User_.username, List.of("ABC")),
-                Map.entry(User_.pkiDn, List.of("ZYX"))
+                Map.entry((root) -> root.get(User_.username), List.of("ABC")),
+                Map.entry((root) -> root.get(User_.pkiDn), List.of("ZYX"))
         ));
         assertEquals(1, actual.size());
         assertTrue(actual.contains(u1));

@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import org.example.commons.entities.User;
-import org.example.commons.entities.UserRole;
-import org.example.commons.entities.User_;
-import org.example.commons.entities.projections.UserProjection;
-import org.example.commons.repositories.api.UserRepository;
-import org.example.commons.repositories.api.UserRoleRepository;
+import org.example.base.entities.User;
+import org.example.base.entities.UserRole;
+import org.example.base.entities.User_;
+import org.example.base.entities.projections.UserProjection;
+import org.example.base.repositories.UserRepository;
+import org.example.base.repositories.UserRoleRepository;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -59,27 +59,6 @@ public class ProjectedRepositoryTest {
         List<UserProjection> list = users.findAllProjected();
         assertEquals(3, list.size());
         assertTrue(list.containsAll(Arrays.asList(udt1, udt2, udt3)));
-    }
-
-    @Test
-    public void testFindAllProjectedWithComparator() {
-        List<UserProjection> expected = List.of(udt1, udt2, udt3);
-        List<UserProjection> actual = users.findAllProjected(UserProjection.defaultSort);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testFindAllProjectedWithPredicate() {
-        List<UserProjection> expected = List.of(udt1, udt2);
-        List<UserProjection> actual = users.findAllProjected(udt -> udt.getUsername().contains("C"));
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testFindAllProjectedWithComparatorAndPredicate() {
-        List<UserProjection> expected = List.of(udt1, udt2);
-        List<UserProjection> actual = users.findAllProjected(UserProjection.defaultSort, udt -> udt.getUsername().contains("C"));
-        assertEquals(expected, actual);
     }
 
     @Test
